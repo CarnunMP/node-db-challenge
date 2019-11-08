@@ -16,12 +16,24 @@ exports.up = function(knex) {
         .notNullable();
       table.string('description', 256);
     })
-    
+    .createTable('tasks', table => {
+      table.increments();
+      table.string('description', 256)
+        .notNullable();
+      table.string('notes', 256);
+      table.boolean('completed')
+        .notNullable()
+        .defaultTo('false');
+      table.integer('project_id')
+        .unsigned()
+        .notNullable()
+        .references('id').inTable('projects');
+    })
 };
 
 exports.down = function(knex) {
   return knex.schema
-
+    .dropTableIfExists('tasks')
     .dropTableIfExists('resources')
     .dropTableIfExists('projects');
 };
