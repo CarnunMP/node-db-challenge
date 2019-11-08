@@ -4,6 +4,8 @@ const Resources = require('../models/resourcesModel');
 
 const router = express.Router();
 
-// router.get...
+router.get('/', (req, res) => {
+  //
+})
 
 module.exports = router;
