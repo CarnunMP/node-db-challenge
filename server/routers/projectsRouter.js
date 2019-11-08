@@ -1,12 +1,9 @@
 const express = require('express');
 
-const tasksRouter = require('./tasksRouter');
 const Projects = require('../models/projectsModel');
-const Resources = require('../models/resourcesModel');
+const Tasks = require('../models/tasksModel');
 
 const router = express.Router();
-
-router.use('/:id/tasks', tasksRouter);
 
 router.get('/', (req, res) => {
   Projects.find()
@@ -16,6 +13,18 @@ router.get('/', (req, res) => {
     .catch(err => {
       res.status(500).json( {
         message: `Failed to get projects: ${err.message}`,
+      });
+    });
+});
+
+router.get('/:id/tasks', (req, res) => {
+  Tasks.findByProjectId(req.params.id)
+    .then(task => {
+      res.status(200).json(task);
+    })
+    .catch(err => {
+      res.status(500).json( {
+        message: `Failed to get tasks for project: ${err.message}`,
       });
     });
 });

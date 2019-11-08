@@ -7,7 +7,7 @@ module.exports = {
 }
 
 function find() {
-  return db('resources AS r');
+  return db('resources');
 }
 
 function findById(id) {

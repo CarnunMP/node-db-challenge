@@ -7,7 +7,7 @@ module.exports = {
 }
 
 function find() {
-  return db('projects AS p');
+  return db('projects');
 }
 
 function findById(id) {
