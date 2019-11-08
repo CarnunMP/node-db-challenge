@@ -1,6 +1,6 @@
 const express = require('express');
 
-const tasksRouter = require('./routers/tasksRouter');
+const tasksRouter = require('./tasksRouter');
 const Projects = require('../models/projectsModel');
 const Resources = require('../models/resourcesModel');
 
