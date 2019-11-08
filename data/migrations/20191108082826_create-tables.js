@@ -29,10 +29,22 @@ exports.up = function(knex) {
         .notNullable()
         .references('id').inTable('projects');
     })
+    .createTable('PtoR', table => {
+      table.integer('project_id')
+        .unsigned()
+        .notNullable()
+        .references('id').inTable('projects');
+      table.integer('resource_id')
+        .unsigned()
+        .notNullable()
+        .references('id').inTable('resources');
+      table.primary(['project_id', 'resource_id']);
+    });
 };
 
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists('PtoR')
     .dropTableIfExists('tasks')
     .dropTableIfExists('resources')
     .dropTableIfExists('projects');
