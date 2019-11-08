@@ -8,7 +8,13 @@ const router = express.Router();
 router.get('/', (req, res) => {
   Projects.find()
     .then(projects => {
-      res.status(200).json(projects);
+      const fixedBools = projects.map(project => ({
+        ...project,
+        completed: project.completed === '1',
+      }));
+      // ^Hmm... there must be a way to do this in the model/knex file? :/
+
+      res.status(200).json(fixedBools);
     })
     .catch(err => {
       res.status(500).json( {
@@ -19,8 +25,13 @@ router.get('/', (req, res) => {
 
 router.get('/:id/tasks', (req, res) => {
   Tasks.findByProjectId(req.params.id)
-    .then(task => {
-      res.status(200).json(task);
+    .then(tasks => {
+      const fixedBools = tasks.map(task => ({
+        ...task,
+        completed: task.completed === '1',
+      }));
+
+      res.status(200).json(fixedBools);
     })
     .catch(err => {
       res.status(500).json( {

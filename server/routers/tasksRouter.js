@@ -6,8 +6,13 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   Tasks.find()
-    .then(task => {
-      res.status(200).json(task);
+    .then(tasks => {
+      const fixedBools = tasks.map(task => ({
+        ...task,
+        completed: task.completed === '1',
+      }));
+
+      res.status(200).json(fixedBools);
     })
     .catch(err => {
       res.status(500).json( {
