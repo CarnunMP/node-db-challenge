@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Projects = require('../models/projectsModel');
+const Resources = require('../models/resourcesModel');
 const Tasks = require('../models/tasksModel');
 
 const router = express.Router();
@@ -22,6 +23,51 @@ router.get('/', (req, res) => {
       });
     });
 });
+
+// Stretch:
+router.get('/:id', (req, res) => {
+  Projects.findById(req.params.id)
+    .then(project => {
+      const fixedBoolsProject = {
+        ...project,
+        completed: project.completed === '1',
+      };
+
+      Tasks.findByProjectId(req.params.id)
+        .then(tasks => {
+          const fixedBoolsTasks = tasks.map(task => ({
+            ...task,
+            completed: task.completed === '1',
+          }));
+
+          Resources.findByProjectId(req.params.id)
+            .then(resources => {
+              const returnObj = {
+                ...fixedBoolsProject,
+                tasks: fixedBoolsTasks,
+                resources: resources,
+              }
+
+              res.status(200).json(returnObj);
+            })
+            .catch(err => {
+              res.status(500).json( {
+                message: `Failed to get resources for project: ${err.message}`,
+              });
+            });
+        })
+        .catch(err => {
+          res.status(500).json( {
+            message: `Failed to get tasks for project: ${err.message}`,
+          });
+        });
+    })
+    .catch(err => {
+      res.status(500).json( {
+        message: `Failed to get project by id: ${err.message}`,
+      });
+    });
+})
 
 router.get('/:id/tasks', (req, res) => {
   Tasks.findByProjectId(req.params.id)
