@@ -7,8 +7,7 @@ module.exports = {
 }
 
 function find() {
-  return db('resources AS r')
-    .select('r.name');
+  return db('resources AS r');
 }
 
 function findById(id) {
@@ -18,7 +17,7 @@ function findById(id) {
 }
 
 function add(resource) {
-  return db('resources AS r').insert(resource)
+  return db('resources').insert(resource)
     .then(ids => {
       return findById(ids[0]);
     });
