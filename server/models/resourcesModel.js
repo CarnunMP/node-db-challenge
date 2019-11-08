@@ -8,7 +8,7 @@ module.exports = {
 
 function find() {
   return db('resources AS r')
-    .select('r.name', 'r.description');
+    .select('r.name');
 }
 
 function findById(id) {
